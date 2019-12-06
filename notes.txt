@@ -1,0 +1,16 @@
+LIMS
+User management – Django built in functionality
+https://docs.djangoproject.com/en/2.2/topics/auth/default/
+
+Logging – Django logging functionality
+https://docs.djangoproject.com/en/3.0/topics/logging/
+
+REST API – Django rest framework 
+https://www.django-rest-framework.org/
+https://www.django-rest-framework.org/tutorial/quickstart/
+
+Background recurring tasks – Django Background Tasks
+https://django-background-tasks.readthedocs.io/en/latest/
+
+Read/Write Excel – openpyxl
+https://openpyxl.readthedocs.io/en/stable/index.html
