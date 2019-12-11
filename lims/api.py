@@ -60,11 +60,24 @@ def tasks(request):
     """
     API endpoint that returns all tasks.
     """
-    return HttpResponse(DBTask.objects.all())
+    result = DBTask.objects.all()
+    resultJson = serializers.serialize('json', result)
+    return HttpResponse(resultJson, content_type='application/json')
 
 
 def workflows(request):
     """
     API endpoint that returns all workflows
     """
-    return HttpResponse(DBWorkflow.objects.all())
+    result = DBWorkflow.objects.all()
+    resultJson = serializers.serialize('json', result)
+    return HttpResponse(resultJson, content_type='application/json')
+
+
+def processors(request):
+    """
+    API endpoint that returns all processors
+    """
+    result = DBProcessor.objects.all()
+    resultJson = serializers.serialize('json', result)
+    return HttpResponse(resultJson, content_type='application/json')
