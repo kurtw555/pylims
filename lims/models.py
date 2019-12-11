@@ -3,20 +3,24 @@ from django.db import models
 # Create your models here.
 
 
-# class Processor(modeslModel):
-#     name = models.CharField(max_length=250)
+class DBProcessor(models.Model):
+    FILE_TYPES = (
+        (".csv", "comma separated value"),
+        (".xlsx", "excel"),
+        (".txt", "tab delimited")
+    )
+    name = models.CharField(max_length=20)
+    description = models.CharField(max_length=50)
+    file_type = models.CharField(max_length=5, choices=FILE_TYPES)
+    input_file = models.CharField(max_length=50)
+    path = models.CharField(max_length=50)
 
 
-class Task(models.Model):
-    id = models.UUIDField(primary_key='true')
-    workflow = models.CharField(max_length=250)
-    status = models.CharField(max_length=250)
-    date = models.DateField()
+class DBTask(models.Model):
+    processor = models.ForeignKey(DBProcessor)
+    input_file = models.CharField(max_length=50)
+    status = models.CharField(max_length=50)
 
 
-class Workflow(models.Model):
-    name = models.CharField(max_length=250)
-    processor = models.CharField(max_length=250)
-    inputPath = models.CharField(max_length=250)
-    outputPath = models.CharField(max_length=250)
-    frequency = models.PositiveIntegerField()
+class DBWorkflow(models.Model):
+    processor = models.ForeignKey(DBProcessor)
