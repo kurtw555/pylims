@@ -1,12 +1,12 @@
 from django.urls import path
 
-from lims import views
+from lims import api
 
 urlpatterns = [
-    path('register/', views.register, name='register'),
-    path('login/', views.login, name='login'),
-    path('logout/', views.logout, name='logout'),
-    path('users/', views.users, name='users'),
-    path('tasks/', views.tasks, name='tasks'),
-    path('workflows/', views.workflows, name='workflows')
+    path('register', api.register, name='register'),
+    path('login', api.login, name='login'),
+    path('logout', api.logout, name='logout'),
+    path('users/', api.users, name='users'),
+    path('tasks/', api.tasks, name='tasks'),
+    path('workflows/', api.workflows, name='workflows')
 ]

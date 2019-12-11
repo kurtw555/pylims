@@ -17,10 +17,10 @@ class DBProcessor(models.Model):
 
 
 class DBTask(models.Model):
-    processor = models.ForeignKey(DBProcessor)
+    processor = DBProcessor
     input_file = models.CharField(max_length=50)
     status = models.CharField(max_length=50)
 
 
 class DBWorkflow(models.Model):
-    processor = models.ForeignKey(DBProcessor)
+    processor = DBProcessor

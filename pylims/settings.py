@@ -39,11 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    << << << < HEAD
     'lims'
-    == == == =
-    'lims'
-    >> >>>> > dce12a5c4e0d920c6653d042dfd9a81c6ba7599b
 ]
 
 MIDDLEWARE = [
