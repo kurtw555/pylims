@@ -15,12 +15,18 @@ class Processor(models.Model):
     file_type = models.CharField(max_length=5, choices=FILE_TYPES)
     #input_file = models.CharField(max_length=50)
     #path = models.CharField(max_length=50)
+    def __str__(self):
+        return f'{self.name}'
+
 
 class Workflow(models.Model):
+    name = models.CharField(max_length=20, default='')
     processor = Processor
     input_path = models.CharField(max_length=50)
     #interval in seconds - limited to 32767 - roughly 22 days
     interval = models.PositiveSmallIntegerField()
+    def __str__(self):
+        return f'{self.name}'
 
 class Task(models.Model):
     workflow = Workflow
