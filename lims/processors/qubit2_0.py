@@ -5,13 +5,13 @@ from lims.plugins.plugin_collection import Plugin
 #from plugins.plugin_collection import Plugin
 
 
-class MassLynx(Plugin):
-    """This is the Mass Lynx data processor"""
+class Qubit2_0(Plugin):
+    """This is the Qubit2.0 data processor"""
 
     def __init__(self):
         super().__init__()
-        self.name = 'mass_lynx'
-        self.description = 'Mass Lynx'
+        self.name = 'qubit2_0'
+        self.description = 'Processor for Qubit 2.0 data files'
 
     def execute(self, processor):
         data = self.pd.read_csv("TestBookFull.csv")

@@ -3,7 +3,7 @@ from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
 from django.http import HttpResponse
 
-from lims.models import DBTask, DBWorkflow, DBProcessor
+from lims.models import Task, Workflow, Processor
 
 
 def register(request):
