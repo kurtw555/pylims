@@ -38,11 +38,18 @@ def tasks(request):
     """
     API endpoint that returns all tasks.
     """
-    return HttpResponse(DBTask.objects.all())
+    return HttpResponse(Task.objects.all())
 
 
 def workflows(request):
     """
     API endpoint that returns all workflows
     """
-    return HttpResponse(DBWorkflow.objects.all())
+    return HttpResponse(Workflow.objects.all())
+
+def processors(request):
+    """
+    API endpoint that returns all workflows
+    """
+    return HttpResponse("Inside processor")
+    #return HttpResponse(Workflow.objects.all())
