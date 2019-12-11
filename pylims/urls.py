@@ -24,6 +24,8 @@ from lims import views, urls
 router = routers.DefaultRouter()
 router.register(r'users', views.UserViewSet)
 router.register(r'groups', views.GroupViewSet)
+router.register(r'processors', views.ProcessorViewSet)
+router.register(r'workflows', views.WorkflowViewSet)
 
 # Wire up our API using automatic URL routing.
 # Additionally, we include login URLs for the browsable API.

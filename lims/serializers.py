@@ -6,7 +6,7 @@ from rest_framework import serializers
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['username', 'first_name', 'last_name']
+        fields = ['username', 'first_name', 'last_name', 'password']
 
 
 class PermissionSerializer(serializers.ModelSerializer):
@@ -23,7 +23,7 @@ class GroupSerializer(serializers.ModelSerializer):
 class WorkflowSerializer(serializers.ModelSerializer):
     class Meta:
         model = Workflow
-        fields = ['processor', 'input_path', 'interval']
+        fields = ['name', 'input_path', 'interval']
 
 class ProcessorSerializer(serializers.ModelSerializer):
     class Meta:

@@ -12,6 +12,7 @@ class MassLynx(Plugin):
         super().__init__()
         self.name = 'mass_lynx'
         self.description = 'Mass Lynx'
+        self.file_type = ".txt"
 
     def execute(self, processor):
         data = self.pd.read_csv("TestBookFull.csv")
