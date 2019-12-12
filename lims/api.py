@@ -15,6 +15,7 @@ from rest_framework.decorators import api_view
 import json
 
 from lims.models import Task, Workflow, Processor
+from lims.plugins.plugin_collection import PluginCollection
 
 
 @csrf_exempt
@@ -79,6 +80,9 @@ def processors(request):
     """
     API endpoint that returns all processors
     """
+    pc = PluginCollection("lims.processors")
+    plug_processors = pc.plugins
+
     result = Processor.objects.all()
     resultJson = serializers.serialize('json', result)
     return HttpResponse(resultJson, content_type='application/json')
