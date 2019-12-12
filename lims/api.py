@@ -49,10 +49,11 @@ def logout(request):
 
 def users(request):
     """
-    API endpoint that returns all tasks.
+    API endpoint that returns all users.
     """
     result = User.objects.all()
     resultJson = serializers.serialize('json', result)
+    # TODO: send only required data
     return HttpResponse(resultJson, content_type='application/json')
 
 
