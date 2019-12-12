@@ -53,6 +53,7 @@ def users(request):
     """
     result = User.objects.all()
     resultJson = serializers.serialize('json', result)
+    # TODO: send only required data
     return HttpResponse(resultJson, content_type='application/json')
 
 
@@ -80,4 +81,5 @@ def processors(request):
     """
     result = DBProcessor.objects.all()
     resultJson = serializers.serialize('json', result)
+    print(resultJson)
     return HttpResponse(resultJson, content_type='application/json')
