@@ -49,7 +49,7 @@ def logout(request):
 
 def users(request):
     """
-    API endpoint that returns all tasks.
+    API endpoint that returns all users.
     """
     result = User.objects.all()
     resultJson = serializers.serialize('json', result)
@@ -81,5 +81,4 @@ def processors(request):
     """
     result = Processor.objects.all()
     resultJson = serializers.serialize('json', result)
-    print(resultJson)
     return HttpResponse(resultJson, content_type='application/json')
