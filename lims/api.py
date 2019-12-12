@@ -14,7 +14,7 @@ from rest_framework.decorators import api_view
 
 import json
 
-from lims.models import DBTask, DBWorkflow, DBProcessor
+from lims.models import Task, Workflow, Processor
 
 
 @csrf_exempt
@@ -61,7 +61,7 @@ def tasks(request):
     """
     API endpoint that returns all tasks.
     """
-    result = DBTask.objects.all()
+    result = Task.objects.all()
     resultJson = serializers.serialize('json', result)
     return HttpResponse(resultJson, content_type='application/json')
 
@@ -70,7 +70,7 @@ def workflows(request):
     """
     API endpoint that returns all workflows
     """
-    result = DBWorkflow.objects.all()
+    result = Workflow.objects.all()
     resultJson = serializers.serialize('json', result)
     return HttpResponse(resultJson, content_type='application/json')
 
@@ -79,7 +79,7 @@ def processors(request):
     """
     API endpoint that returns all processors
     """
-    result = DBProcessor.objects.all()
+    result = Processor.objects.all()
     resultJson = serializers.serialize('json', result)
     print(resultJson)
     return HttpResponse(resultJson, content_type='application/json')

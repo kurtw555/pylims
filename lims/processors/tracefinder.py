@@ -5,14 +5,13 @@ from lims.plugins.plugin_collection import Plugin
 #from plugins.plugin_collection import Plugin
 
 
-class MassLynx(Plugin):
-    """This is the Mass Lynx data processor"""
+class Tracefinder(Plugin):
+    """This is the Tracefinder data processor"""
 
     def __init__(self):
         super().__init__()
-        self.name = 'mass_lynx'
-        self.description = 'Mass Lynx'
-        self.file_type = ".txt"
+        self.name = 'tracefinder'
+        self.description = 'Processor for Tracefinder data files'
 
     def execute(self, processor):
         data = self.pd.read_csv("TestBookFull.csv")

@@ -5,7 +5,8 @@ from django.contrib.auth.models import User, Group
 from django.views.decorators.csrf import csrf_exempt
 
 from rest_framework import viewsets
-from lims.serializers import UserSerializer, GroupSerializer
+from .models import Processor, Workflow
+from lims.serializers import UserSerializer, GroupSerializer, ProcessorSerializer, WorkflowSerializer
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -24,3 +25,17 @@ class GroupViewSet(viewsets.ModelViewSet):
     """
     queryset = Group.objects.all()
     serializer_class = GroupSerializer
+
+class ProcessorViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows groups to be viewed or edited.
+    """
+    queryset = Processor.objects.all()
+    serializer_class = ProcessorSerializer
+
+class WorkflowViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows groups to be viewed or edited.
+    """
+    queryset = Workflow.objects.all()
+    serializer_class = WorkflowSerializer

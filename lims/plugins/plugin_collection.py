@@ -11,7 +11,11 @@ class Plugin():
     """
 
     def __init__(self):
+        self.id = 'UNKNOWN'
+        self.name = 'UNKNOWN'
         self.description = 'UNKNOWN'
+        self.file_type = 'UNKNOWN'
+        self.input_file = 'UNKNOWN'
         self.pd = pd
         self.openpyxl = openpyxl
 
@@ -20,6 +24,23 @@ class Plugin():
         method that our framework will call
         """
         raise NotImplementedError
+
+    def check_input_file(self):
+        ret_stat = ReturnStatus()
+        if self.db_processor is None:            
+            ret_stat.payload["status"] = "error"
+            ret_stat.payload["message"] = "Could not find an input file"
+            return ret_stat
+
+        input_file = self.db_processor.input_file
+        if not os.path.exists(input_file):
+            ret_stat.payload["status"] = "error"
+            ret_stat.payload["message"] = "Could not find an input file: " + input_file
+            return ret_stat
+            
+        ret_stat.payload["status"] = "success"
+        ret_stat.status = True
+        return ret_stat
 
 
 
@@ -48,9 +69,9 @@ class PluginCollection():
         self.walk_package(self.plugin_package)
 
     
-    def execute_plugin(self, processor):
+    def execute(self, processor):
         if self.plugins is None:
-            return None        
+            return None
             
         for plugin in self.plugins:
             if plugin.name.lower().strip() == processor.strip():

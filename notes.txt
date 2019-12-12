@@ -14,3 +14,6 @@ https://django-background-tasks.readthedocs.io/en/latest/
 
 Read/Write Excel – openpyxl
 https://openpyxl.readthedocs.io/en/stable/index.html
+
+Plugin manager
+https://github.com/gdiepen/python_plugin_example
