@@ -10,7 +10,10 @@
       "request": "launch",
       "program": "${workspaceFolder}\\manage.py",
       "args": ["runserver", "--noreload"],
-      "django": true
+      "django": true,
+      "env": {
+        "CONDA_DLL_SEARCH_MODIFICATION_ENABLE":1
+      }
     }
   ]
 }
