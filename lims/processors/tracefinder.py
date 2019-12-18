@@ -14,5 +14,5 @@ class Tracefinder(Plugin):
         self.description = 'Processor for Tracefinder data files'
 
     def execute(self, processor):
-        data = self.pd.read_csv("TestBookFull.csv")
-        return processor * -1
+        df = self.pd.read_csv("TestBookFull.csv")        
+        return df

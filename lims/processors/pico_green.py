@@ -13,6 +13,6 @@ class PicoGreen(Plugin):
         self.name = 'pico_green'
         self.description = 'Processor for PicoGreen data files'
 
-    def execute(self, processor):
-        data = self.pd.read_csv("TestBookFull.csv")
-        return processor * -1
+    def execute(self, processor):        
+        df = self.pd.read_csv("TestBookFull.csv")        
+        return df

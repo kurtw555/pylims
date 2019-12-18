@@ -15,5 +15,5 @@ class MassLynx(Plugin):
         self.file_type = ".txt"
 
     def execute(self, processor):
-        data = self.pd.read_csv("TestBookFull.csv")
-        return processor * -1
+        df = self.pd.read_csv("TestBookFull.csv")        
+        return df
