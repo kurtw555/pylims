@@ -13,6 +13,7 @@ class Processor(models.Model):
     name = models.CharField(max_length=20)
     description = models.CharField(max_length=250)
     file_type = models.CharField(max_length=5, choices=FILE_TYPES)
+    enabled = models.BooleanField(default=False)
     #input_file = models.CharField(max_length=50)
     #path = models.CharField(max_length=50)
 
@@ -24,7 +25,7 @@ class Workflow(models.Model):
     name = models.CharField(max_length=20, default='')
     processor = Processor
     input_path = models.CharField(max_length=250)
-    output_path = models.CharField(max_length=250)
+    output_path = models.CharField(max_length=250, default='')
     # interval in seconds - limited to 32767 - roughly 22 days
     interval = models.PositiveSmallIntegerField()
 
