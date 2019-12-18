@@ -86,3 +86,12 @@ def processors(request):
     result = Processor.objects.all()
     resultJson = serializers.serialize('json', result)
     return HttpResponse(resultJson, content_type='application/json')
+
+
+@csrf_exempt
+def addProcessor(request):
+    """
+    API Endpoint that adds a processor.py to processors/
+    """
+    print(request)
+    return HttpResponse({"response": "processor added"}, content_type='application/json')
