@@ -60,7 +60,7 @@ class DataGrid(gridlib.Grid):
 class LIMS(wx.Frame):
 
     def __init__(self, parent, title):
-        super(LIMS, self).__init__(parent, title=title, size=wx.Size(1000, 600))
+        super(LIMS, self).__init__(parent, title=title, size=wx.Size(1025, 650))
 
         self.data = None
         self.gbs = None
@@ -86,7 +86,7 @@ class LIMS(wx.Frame):
 
         #self.SetSize(wx.Size(500, 500))        
 
-        panel = wx.Panel(self)
+        panel = wx.Panel(self)        
         #self.data_grid = self.create_grid(panel, self.data)
 
         hbox = wx.BoxSizer(wx.HORIZONTAL)        
@@ -160,15 +160,14 @@ class LIMS(wx.Frame):
         #df = pd.DataFrame(np.random.random((10, 5)))
         #table = DataTable(df)
 
-        self.grid = wx.grid.Grid(panel, -1)
-        #self.grid.SetTable(table, takeOwnership=True)
-        #self.grid.AutoSizeColumns()
         
-        gbs.Add(self.grid, pos=(4,0), span = (1, 5), flag=wx.EXPAND)        
+        self.grid = wx.grid.Grid(panel, -1, size= wx.Size(900, 400))                
+        
+        gbs.Add(self.grid, pos=(4,0), span = (1, 5), flag= wx.SYS_VSCROLL_X | wx.SYS_HSCROLL_Y)        
 
-        hbox.Add(gbs, proportion=1, flag=wx.ALL|wx.EXPAND, border=15)        
-        panel.SetSizer(hbox)
-
+        hbox.Add(gbs, proportion=1, flag=wx.ALL, border=15)        
+        panel.SetSizer(hbox)        
+        
         self.CreateStatusBar()
         self.SetStatusText("")        
         
@@ -180,7 +179,7 @@ class LIMS(wx.Frame):
         #if self.grid != None:
         #    self.gbs.Hide(self.grid)            
         
-        df = pd.DataFrame(np.random.random((10, 5)))
+        df = pd.DataFrame(np.random.random((100, 10)))
         table = DataTable(df)
 
         #self.grid = wx.grid.Grid(self, -1)
