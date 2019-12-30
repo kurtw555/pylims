@@ -14,6 +14,13 @@
       "env": {
         "CONDA_DLL_SEARCH_MODIFICATION_ENABLE":1
       }
-    }
+    },
+    {
+      "name": "Python: Current File",
+      "type": "python",
+      "request": "launch",
+      "program": "${file}",
+      "console": "integratedTerminal"
+  }
   ]
 }

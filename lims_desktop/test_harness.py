@@ -1,5 +1,6 @@
 import numpy as np
 import pandas as pd
+import ntpath
 
 import wx
 import wx.grid as gridlib
@@ -65,6 +66,12 @@ class LIMS(wx.Frame):
         self.data = None
         self.gbs = None
         self.grid = None
+        self.tc_input = None
+        self.tc_id = None
+        self.tc_name = None
+        self.tc_desc = None
+        self.tc_file_type = None
+
         self.InitUI()
         self.Layout()
         self.Centre()
@@ -85,18 +92,19 @@ class LIMS(wx.Frame):
     def InitUI(self):
 
         #self.SetSize(wx.Size(500, 500))        
+        processors = ["AAAA", "BBBB", "CCCC"]
 
-        panel = wx.Panel(self)        
+        panel = wx.Panel(self, name="MainPanel")
         #self.data_grid = self.create_grid(panel, self.data)
 
-        hbox = wx.BoxSizer(wx.HORIZONTAL)        
+        hbox = wx.BoxSizer(wx.HORIZONTAL)
 
         #fgs = wx.FlexGridSizer(5, 5, 9, 35)
-        gbs = wx.GridBagSizer(9, 30)        
+        gbs = wx.GridBagSizer(9, 30)
         self.gbs = gbs
         
         stat_txt1 = wx.StaticText(panel, label='')
-        stat_txt2 = wx.StaticText(panel, label='')
+        #stat_txt2 = wx.StaticText(panel, label='')
         stat_txt3 = wx.StaticText(panel, label='')
         stat_txt3b = wx.StaticText(panel, label='')
         stat_txt4 = wx.StaticText(panel, label='')
@@ -105,30 +113,36 @@ class LIMS(wx.Frame):
 
         #Row 1
         lbl_processor = wx.StaticText(panel, label="Processor")
-        tc_proc = wx.TextCtrl(panel, wx.EXPAND)
+        #tc_proc = wx.TextCtrl(panel, wx.EXPAND)
+        cb_proc = wx.Choice(panel, wx.EXPAND, choices = processors)
+        self.Bind(wx.EVT_CHOICE , self.on_select_combo, cb_proc)
         gbs.Add(lbl_processor, pos=(0,0),flag=wx.EXPAND)
-        gbs.Add(tc_proc, pos=(0,1),flag=wx.EXPAND)
+        #gbs.Add(tc_proc, pos=(0,1),flag=wx.EXPAND)
+        gbs.Add(cb_proc, pos=(0,1),flag=wx.EXPAND)
 
         gbs.Add(stat_txt1, pos=(0,2),flag=wx.EXPAND)
 
         lbl_id = wx.StaticText(panel, label="ID:")
-        tc_id = wx.TextCtrl(panel, wx.EXPAND)
+        self.tc_id = wx.TextCtrl(panel, wx.EXPAND)
         gbs.Add(lbl_id, pos=(0,3),flag=wx.EXPAND)
-        gbs.Add(tc_id, pos=(0,4),flag=wx.EXPAND)
+        gbs.Add(self.tc_id, pos=(0,4),flag=wx.EXPAND)
         
 
         #Row 2
         lbl_input = wx.StaticText(panel, label="Input File")
-        tc_input = wx.TextCtrl(panel)
+        self.tc_input = wx.TextCtrl(panel)
+        btn_select_file = wx.Button(panel, wx.ID_ANY, '...')
         gbs.Add(lbl_input, pos=(1,0),flag=wx.EXPAND)
-        gbs.Add(tc_input, pos=(1,1),flag=wx.EXPAND)
+        gbs.Add(self.tc_input, pos=(1,1),flag=wx.EXPAND)
 
-        gbs.Add(stat_txt2, pos=(1,2),flag=wx.EXPAND)
+        #gbs.Add(stat_txt2, pos=(1,2),flag=wx.EXPAND)
+        gbs.Add(btn_select_file, pos=(1,2),flag=wx.EXPAND)
+        self.Bind(wx.EVT_BUTTON, self.on_select_file, btn_select_file)
 
         lbl_name = wx.StaticText(panel, label="Name:")
-        tc_name = wx.TextCtrl(panel)
+        self.tc_name = wx.TextCtrl(panel)
         gbs.Add(lbl_name, pos=(1,3),flag=wx.EXPAND)
-        gbs.Add(tc_name, pos=(1,4),flag=wx.EXPAND)
+        gbs.Add(self.tc_name, pos=(1,4),flag=wx.EXPAND)
 
 
         #Row 3
@@ -140,9 +154,9 @@ class LIMS(wx.Frame):
         gbs.Add(stat_txt3b, pos=(2,2),flag=wx.EXPAND)
 
         lbl_desc = wx.StaticText(panel, label="Description:")
-        tc_desc = wx.TextCtrl(panel)
+        self.tc_desc = wx.TextCtrl(panel)
         gbs.Add(lbl_desc, pos=(2,3),flag=wx.EXPAND)
-        gbs.Add(tc_desc, pos=(2,4),flag=wx.EXPAND)
+        gbs.Add(self.tc_desc, pos=(2,4),flag=wx.EXPAND)
 
         #Row 4
         gbs.Add(stat_txt4, pos=(3,0),flag=wx.EXPAND)
@@ -153,24 +167,36 @@ class LIMS(wx.Frame):
         gbs.Add(stat_txt4b, pos=(3,2),flag=wx.EXPAND)        
 
         lbl_file_type = wx.StaticText(panel, label="File Type:")
-        tc_file_type = wx.TextCtrl(panel)
+        self.tc_file_type = wx.TextCtrl(panel)
         gbs.Add(lbl_file_type, pos=(3,3),flag=wx.EXPAND)
-        gbs.Add(tc_file_type, pos=(3,4),flag=wx.EXPAND)
-
-        #df = pd.DataFrame(np.random.random((10, 5)))
-        #table = DataTable(df)
-
+        gbs.Add(self.tc_file_type, pos=(3,4),flag=wx.EXPAND)
         
-        self.grid = wx.grid.Grid(panel, -1, size= wx.Size(900, 400))                
+        self.grid = wx.grid.Grid(panel, -1, size= wx.Size(900, 400), name="DataGrid")                
         
         gbs.Add(self.grid, pos=(4,0), span = (1, 5), flag= wx.SYS_VSCROLL_X | wx.SYS_HSCROLL_Y)        
 
-        hbox.Add(gbs, proportion=1, flag=wx.ALL, border=15)        
-        panel.SetSizer(hbox)        
+        #hbox.Add(gbs, proportion=1, flag=wx.ALL, border=15)        
+        #panel.SetSizer(hbox)        
         
         self.CreateStatusBar()
-        self.SetStatusText("")        
+        self.SetStatusText("")
+
+        self.set_empty_table()
         
+    def on_select_file(self, event):
+        with wx.FileDialog(self, "Select instrument file", wildcard="All file (*.*)|*.*",
+                       style=wx.FD_OPEN | wx.FD_FILE_MUST_EXIST) as fileDialog:
+
+            if fileDialog.ShowModal() == wx.ID_CANCEL:
+                return     # the user changed their mind
+
+            # Proceed loading the file chosen by the user
+            pathname = fileDialog.GetPath()
+            file_name = ntpath.basename(pathname)
+            self.tc_input.SetValue(file_name)
+
+    def on_select_combo(self, event):
+        print("Combobox handler")
 
     def on_run(self, event):
         # Do something
@@ -182,16 +208,55 @@ class LIMS(wx.Frame):
         df = pd.DataFrame(np.random.random((100, 10)))
         table = DataTable(df)
 
-        #self.grid = wx.grid.Grid(self, -1)
+        
         self.grid.SetTable(table, takeOwnership=True)
         self.grid.AutoSizeColumns()
-
-        #self.gbs.Add(self.grid, pos=(4,0), span = (1, 5), flag=wx.EXPAND)
+        
         self.gbs.Layout()
         self.Layout()
  
-    def on_save(self, event):
+    def on_save(self, event):        
         ival = 1
+
+    def set_empty_table(self):
+        data = {'Aliquot':[''],
+            	'Analyte Identifier':[''],
+                'Measured Value':[''],
+                'Units':[''],
+                'Dilution Factor':[''],
+                'Analysis Date/Time':[''],
+                'Comment':[''],
+                'Description':[''],
+                'User Defined 1':[''],
+                'User Defined 2':[''],
+                'User Defined 3':[''],
+                'User Defined 4':[''],
+                'User Defined 5':[''],
+                'User Defined 6':[''],
+                'User Defined 7':[''],
+                'User Defined 8':[''],
+                'User Defined 9':[''],
+                'User Defined 10':[''],
+                'User Defined 11':[''],
+                'User Defined 12':[''],
+                'User Defined 13':[''],
+                'User Defined 14':[''],
+                'User Defined 15':[''],
+                'User Defined 16':[''],
+                'User Defined 17':[''],
+                'User Defined 18':[''],
+                'User Defined 19':[''],
+                'User Defined 20':['']
+        }
+        df = pd.DataFrame(data)
+        table = DataTable(df)
+        self.grid.SetTable(table, takeOwnership=True)
+        self.grid.AutoSizeColumns()
+        
+        self.gbs.Layout()
+        self.Layout()
+        return table
+                
 
 def main():
     
