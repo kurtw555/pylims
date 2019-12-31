@@ -4,7 +4,9 @@ import ntpath
 
 import wx
 import wx.grid as gridlib
-import wx.lib.inspection
+#import wx.lib.inspection
+
+from lims.plugins.plugin_collection import PluginCollection
 
 EVEN_ROW_COLOUR = '#CCE6FF'
 GRID_LINE_COLOUR = '#ccc'
@@ -71,7 +73,11 @@ class LIMS(wx.Frame):
         self.tc_name = None
         self.tc_desc = None
         self.tc_file_type = None
+        self.cb_proc = None
+        self.processors = []
+        self.processor_names = []
 
+        self.get_processors()
         self.InitUI()
         self.Layout()
         self.Centre()
@@ -87,6 +93,11 @@ class LIMS(wx.Frame):
         grid.AutoSize()
         grid.AutoSizeColumns(True)
         return grid
+
+    def get_processors(self):
+        self.processors = PluginCollection('lims.processors')
+        for proc in self.processors.plugins:
+            self.processor_names.append(proc.name)
 
 
     def InitUI(self):
@@ -114,16 +125,17 @@ class LIMS(wx.Frame):
         #Row 1
         lbl_processor = wx.StaticText(panel, label="Processor")
         #tc_proc = wx.TextCtrl(panel, wx.EXPAND)
-        cb_proc = wx.Choice(panel, wx.EXPAND, choices = processors)
-        self.Bind(wx.EVT_CHOICE , self.on_select_combo, cb_proc)
+        self.cb_proc = wx.Choice(panel, wx.EXPAND, choices = self.processor_names)
+        self.Bind(wx.EVT_CHOICE , self.on_select_combo, self.cb_proc)
         gbs.Add(lbl_processor, pos=(0,0),flag=wx.EXPAND)
         #gbs.Add(tc_proc, pos=(0,1),flag=wx.EXPAND)
-        gbs.Add(cb_proc, pos=(0,1),flag=wx.EXPAND)
+        gbs.Add(self.cb_proc, pos=(0,1),flag=wx.EXPAND)
 
         gbs.Add(stat_txt1, pos=(0,2),flag=wx.EXPAND)
 
         lbl_id = wx.StaticText(panel, label="ID:")
         self.tc_id = wx.TextCtrl(panel, wx.EXPAND)
+        self.tc_id.SetEditable(False)
         gbs.Add(lbl_id, pos=(0,3),flag=wx.EXPAND)
         gbs.Add(self.tc_id, pos=(0,4),flag=wx.EXPAND)
         
@@ -141,6 +153,7 @@ class LIMS(wx.Frame):
 
         lbl_name = wx.StaticText(panel, label="Name:")
         self.tc_name = wx.TextCtrl(panel)
+        self.tc_name.SetEditable(False)
         gbs.Add(lbl_name, pos=(1,3),flag=wx.EXPAND)
         gbs.Add(self.tc_name, pos=(1,4),flag=wx.EXPAND)
 
@@ -155,6 +168,7 @@ class LIMS(wx.Frame):
 
         lbl_desc = wx.StaticText(panel, label="Description:")
         self.tc_desc = wx.TextCtrl(panel)
+        self.tc_desc.SetEditable(False)
         gbs.Add(lbl_desc, pos=(2,3),flag=wx.EXPAND)
         gbs.Add(self.tc_desc, pos=(2,4),flag=wx.EXPAND)
 
@@ -168,6 +182,7 @@ class LIMS(wx.Frame):
 
         lbl_file_type = wx.StaticText(panel, label="File Type:")
         self.tc_file_type = wx.TextCtrl(panel)
+        self.tc_file_type.SetEditable(False)
         gbs.Add(lbl_file_type, pos=(3,3),flag=wx.EXPAND)
         gbs.Add(self.tc_file_type, pos=(3,4),flag=wx.EXPAND)
         
@@ -197,6 +212,16 @@ class LIMS(wx.Frame):
 
     def on_select_combo(self, event):
         print("Combobox handler")
+        idx = self.cb_proc.GetSelection()
+        proc_name = self.cb_proc.GetString(idx)
+        print("Processor: " + proc_name)
+        if self.processors is not None:
+            for proc in self.processors.plugins:
+                if proc.name == proc_name:
+                    self.tc_name.SetValue(proc.name)                    
+                    self.tc_desc.SetValue(proc.description)                    
+                    self.tc_file_type.SetValue(proc.file_type)                    
+
 
     def on_run(self, event):
         # Do something
@@ -263,7 +288,7 @@ def main():
     app = wx.App()
     ex = LIMS(None, title='Laboratory Information Management System')
     ex.Show()    
-    wx.lib.inspection.InspectionTool().Show()
+    #wx.lib.inspection.InspectionTool().Show()
     app.MainLoop()
 
 
