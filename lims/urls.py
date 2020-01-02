@@ -10,5 +10,5 @@ urlpatterns = [
     path('tasks/', api.tasks, name='tasks'),
     path('workflows/', api.workflows, name='workflows'),
     path('processors/', api.processors, name='processors'),
-    path('processors/add', api.addProcessor, name='addProcessor')
+    path('processors/add/', api.addProcessor, name='addProcessor')
 ]
