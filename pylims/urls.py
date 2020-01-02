@@ -33,6 +33,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include(router.urls)),
     path('api/', include(urls)),
-    path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
-    path('', include('lims.urls'))
+    path('auth/', include('djoser.urls')),
+    path('auth/', include('djoser.urls.jwt')),
+    path('api/', include('lims.urls'))
 ]
