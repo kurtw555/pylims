@@ -19,6 +19,7 @@ from lims.plugins.plugin_collection import PluginCollection
 from lims.serializers import WorkflowSerializer, TaskSerializer
 
 
+@api_view(['GET'])
 def users(request):
     """
     API endpoint that returns all users.
@@ -67,22 +68,18 @@ def workflows(request):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+@api_view(['GET', 'POST'])
 def processors(request):
     """
     API endpoint that returns all processors
     """
-    pc = PluginCollection("lims.processors")
-    plug_processors = pc.plugins
+    if request.method == 'GET':
+        pc = PluginCollection("lims.processors")
+        plug_processors = pc.plugins
 
-    result = Processor.objects.all()
-    resultJson = serializers.serialize('json', result)
-    return HttpResponse(resultJson, content_type='application/json')
-
-
-@csrf_exempt
-def addProcessor(request):
-    """
-    API Endpoint that adds a processor.py to processors/
-    """
-    print(request)
-    return HttpResponse({"response": "processor added"}, content_type='application/json')
+        result = Processor.objects.all()
+        resultJson = serializers.serialize('json', result)
+        return HttpResponse(resultJson, content_type='application/json')
+    elif request.method == 'POST':
+        return Response({'message': 'POST to this endpoint is not yet enabled'})
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
