@@ -74,7 +74,7 @@ class LIMS(wx.Frame):
         self.tc_desc = None
         self.tc_file_type = None
         self.cb_proc = None
-        self.processors = []
+        self.processors = {}
         self.processor_names = []
 
         self.get_processors()
@@ -95,8 +95,9 @@ class LIMS(wx.Frame):
         return grid
 
     def get_processors(self):
-        self.processors = PluginCollection('lims.processors')
-        for proc in self.processors.plugins:
+        plugins = PluginCollection('lims.processors')
+        for proc in plugins.plugins:
+            self.processors[proc.name] = proc
             self.processor_names.append(proc.name)
 
 
@@ -224,7 +225,15 @@ class LIMS(wx.Frame):
 
 
     def on_run(self, event):
-        # Do something
+        
+        idx = self.cb_proc.GetSelection()
+        proc_name = self.cb_proc.GetString(idx)
+        if proc_name == '':
+            return
+        if self.processors is not None:
+            proc = self.processors[proc_name]
+            proc.execute()
+
         print('onOK handler')
         #item = self.gbs.FindItemAtPosition((4,0))
         #if self.grid != None:

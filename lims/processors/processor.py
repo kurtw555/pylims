@@ -7,7 +7,7 @@ class Processor(abc.ABC):
         self.db_processor = None
 
     @abc.abstractmethod
-    def execute(self, db_processor):
+    def execute(self):
         """ Not implemented - should return pandas dataframe
             that can be written to excel file with df.to_excel
         """

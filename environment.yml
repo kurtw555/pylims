@@ -35,5 +35,8 @@ dependencies:
   - vs2015_runtime=14.16.27012=hf0eaf9b_1
   - wheel=0.33.6=py38_0
   - wincertstore=0.2=py38_0
+  - pip:
+    - pillow==6.2.1
+    - wxpython==4.0.7.post2
 prefix: C:\Users\KWOLFE\AppData\Local\Continuum\anaconda3\envs\pylims
 
