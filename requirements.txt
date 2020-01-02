@@ -2,6 +2,7 @@ certifi==2019.11.28
 Django==2.2.5
 django-cors-headers==3.0.2
 djangorestframework==3.10.3
+djangorestframework-simplejwt==4.3.0
 djoser==2.0.3
 et-xmlfile==1.0.1
 jdcal==1.4.1
