@@ -1,6 +1,5 @@
 
 from django.core import serializers
-from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
 
 from django.views.decorators.csrf import csrf_exempt
@@ -18,36 +17,6 @@ import json
 from lims.models import Task, Workflow, Processor
 from lims.plugins.plugin_collection import PluginCollection
 from lims.serializers import WorkflowSerializer, TaskSerializer
-
-
-@csrf_exempt
-@api_view(["POST"])
-def login(request):
-    """
-    API endpoint that allows login.
-    """
-    print("request---")
-    print(request)
-    print("----------")
-
-    try:
-        data = json.loads(request.body)
-        print("data: " + data["username"])
-        return Response('Hello ' + data["username"] + ', welcome to the machine!')
-    except ValueError as e:
-        return Response(e.args[0], status.HTTP_400_BAD_REQUEST)
-
-
-def register(request):
-    """
-    API endpoint that allows new user registration.
-    """
-
-
-def logout(request):
-    """
-    API endpoint that allows logout.
-    """
 
 
 def users(request):
@@ -70,7 +39,7 @@ def tasks(request):
         serializer = TaskSerializer(tasks, many=True)
         return Response(serializer.data)
         #resultJson = serializers.serialize('json', result)
-        #return HttpResponse(resultJson, content_type='application/json')
+        # return HttpResponse(resultJson, content_type='application/json')
     elif request.method == 'POST':
         serializer = TaskSerializer(data=request.data)
         if serializer.is_valid():
@@ -78,17 +47,18 @@ def tasks(request):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
 @api_view(['GET', 'POST'])
 def workflows(request):
     """
     API endpoint that returns all workflows or creates new workflow
     """
-    if request.method == 'GET':        
+    if request.method == 'GET':
         workflows = Workflow.objects.all()
         serializer = WorkflowSerializer(workflows, many=True)
         return Response(serializer.data)
         #resultJson = serializers.serialize('json', result)
-        #return HttpResponse(resultJson, content_type='application/json')
+        # return HttpResponse(resultJson, content_type='application/json')
     elif request.method == 'POST':
         serializer = WorkflowSerializer(data=request.data)
         if serializer.is_valid():
