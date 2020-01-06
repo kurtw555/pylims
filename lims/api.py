@@ -39,8 +39,6 @@ def tasks(request):
         tasks = Task.objects.all()
         serializer = TaskSerializer(tasks, many=True)
         return Response(serializer.data)
-        #resultJson = serializers.serialize('json', result)
-        # return HttpResponse(resultJson, content_type='application/json')
     elif request.method == 'POST':
         serializer = TaskSerializer(data=request.data)
         if serializer.is_valid():
@@ -58,8 +56,6 @@ def workflows(request):
         workflows = Workflow.objects.all()
         serializer = WorkflowSerializer(workflows, many=True)
         return Response(serializer.data)
-        #resultJson = serializers.serialize('json', result)
-        # return HttpResponse(resultJson, content_type='application/json')
     elif request.method == 'POST':
         serializer = WorkflowSerializer(data=request.data)
         if serializer.is_valid():
