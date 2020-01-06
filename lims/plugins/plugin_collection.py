@@ -81,6 +81,7 @@ class Plugin():
     def get_empty_dataframe(self):
         data = self.get_template_dict()
         df = pd.DataFrame(data, index=[0])
+        df = df.drop(df.index[0])
         return df
 
 
