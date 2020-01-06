@@ -1,8 +1,11 @@
 import inspect
 import os
+import pathlib
+import logging
 import pkgutil
 import pandas as pd
 import openpyxl
+from ..result import Result
 
 
 class Plugin():
@@ -16,31 +19,69 @@ class Plugin():
         self.description = 'UNKNOWN'
         self.file_type = 'UNKNOWN'
         self.input_file = 'UNKNOWN'
+        self.logger = logging.getLogger("LIMS_Run_Processor")
         self.pd = pd
         self.openpyxl = openpyxl
 
-    def execute(self, processor):
+    def execute(self, file):
         """The method that we expect all plugins to implement. This is the
         method that our framework will call
         """
         raise NotImplementedError
 
-    def check_input_file(self):
-        ret_stat = ReturnStatus()
-        if self.db_processor is None:            
-            ret_stat.payload["status"] = "error"
-            ret_stat.payload["message"] = "Could not find an input file"
-            return ret_stat
+    def input_file_exists(self):
+        #ret_stat = ReturnStatus()        
+        
+        file = pathlib.Path(self.input_file)
+        if file.exists():
+            return True
+        else:
+            return False
+        #if not os.path.exists(self.input_file):
+        #   return False
 
-        input_file = self.db_processor.input_file
-        if not os.path.exists(input_file):
-            ret_stat.payload["status"] = "error"
-            ret_stat.payload["message"] = "Could not find an input file: " + input_file
-            return ret_stat
-            
-        ret_stat.payload["status"] = "success"
-        ret_stat.status = True
-        return ret_stat
+    def get_base_file_name(self):
+        base = os.path.basename(self.input_file)
+        file_no_ext = os.path.splitext(base)[0]
+        return file_no_ext
+
+    def get_template_dict(self):
+        data = {'Aliquot':'',
+            	'Analyte Identifier':'',
+                'Measured Value':'',
+                'Units':'',
+                'Dilution Factor':'',
+                'Analysis Date/Time':'',
+                'Comment':'',
+                'Description':'',
+                'User Defined 1':'',
+                'User Defined 2':'',
+                'User Defined 3':'',
+                'User Defined 4':'',
+                'User Defined 5':'',
+                'User Defined 6':'',
+                'User Defined 7':'',
+                'User Defined 8':'',
+                'User Defined 9':'',
+                'User Defined 10':'',
+                'User Defined 11':'',
+                'User Defined 12':'',
+                'User Defined 13':'',
+                'User Defined 14':'',
+                'User Defined 15':'',
+                'User Defined 16':'',
+                'User Defined 17':'',
+                'User Defined 18':'',
+                'User Defined 19':'',
+                'User Defined 20':''
+        }
+        return data
+
+
+    def get_empty_dataframe(self):
+        data = self.get_template_dict()
+        df = pd.DataFrame(data, index=[0])
+        return df
 
 
 

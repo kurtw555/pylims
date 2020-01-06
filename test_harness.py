@@ -1,12 +1,14 @@
 import numpy as np
 import pandas as pd
 import ntpath
+import logging
 
 import wx
 import wx.grid as gridlib
 #import wx.lib.inspection
 
 from lims.plugins.plugin_collection import PluginCollection
+import lims.result
 
 EVEN_ROW_COLOUR = '#CCE6FF'
 GRID_LINE_COLOUR = '#ccc'
@@ -208,8 +210,8 @@ class LIMS(wx.Frame):
 
             # Proceed loading the file chosen by the user
             pathname = fileDialog.GetPath()
-            file_name = ntpath.basename(pathname)
-            self.tc_input.SetValue(file_name)
+            file_name = ntpath.basename(pathname)            
+            self.tc_input.SetValue(pathname)
 
     def on_select_combo(self, event):
         print("Combobox handler")
@@ -217,7 +219,7 @@ class LIMS(wx.Frame):
         proc_name = self.cb_proc.GetString(idx)
         print("Processor: " + proc_name)
         if self.processors is not None:
-            for proc in self.processors.plugins:
+            for key, proc in self.processors.items():
                 if proc.name == proc_name:
                     self.tc_name.SetValue(proc.name)                    
                     self.tc_desc.SetValue(proc.description)                    
@@ -228,18 +230,24 @@ class LIMS(wx.Frame):
         
         idx = self.cb_proc.GetSelection()
         proc_name = self.cb_proc.GetString(idx)
+
+        file = self.tc_input.GetValue()
         if proc_name == '':
             return
+
+        
         if self.processors is not None:
             proc = self.processors[proc_name]
-            proc.execute()
+            result = proc.execute(file)
 
         print('onOK handler')
         #item = self.gbs.FindItemAtPosition((4,0))
         #if self.grid != None:
         #    self.gbs.Hide(self.grid)            
         
-        df = pd.DataFrame(np.random.random((100, 10)))
+        #df = pd.DataFrame(np.random.random((100, 10)))
+        df = result.df
+        df.to_excel(result.table_name +".xlsx", index=False)
         table = DataTable(df)
 
         
@@ -294,6 +302,12 @@ class LIMS(wx.Frame):
 
 def main():
     
+    logger = logging.getLogger("LIMS_Run_Processor")
+    f_handler = logging.FileHandler('file.log',mode='a')
+    f_format = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s', datefmt='%d-%b-%y %H:%M:%S')
+    f_handler.setFormatter(f_format)
+    logger.addHandler(f_handler)
+
     app = wx.App()
     ex = LIMS(None, title='Laboratory Information Management System')
     ex.Show()    
