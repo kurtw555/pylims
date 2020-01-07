@@ -1,0 +1,39 @@
+version: '3.7'
+
+services:
+  nginx:
+    restart: always
+    build: ./nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    links:
+      django
+
+  django:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    expose:
+      - "8080"
+    environment:
+      - DJANGO_SETTINGS_MODULE=settings
+      - REDIS_HOSTNAME=redis
+      - REDIS_PORT=6379
+    links:
+      redis
+      celery
+
+  celery:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: celery worker -A lims.lims_celery -Q lims -l info
+    links:
+      redis
+
+  redis:
+    image: redis:latest
+    hostname: redis
+    expose:
+      - "6379"
