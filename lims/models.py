@@ -37,4 +37,4 @@ class Task(models.Model):
     workflow = Workflow
     input_file = models.CharField(max_length=50)
     start_time = models.DateTimeField()
-    status = models.CharField(max_length=50)
+    status = models.CharField(max_length=50, default='PENDING')
