@@ -23,37 +23,43 @@ class BackgroundProcessing:
         logging.info("Starting LIMS workflow check")
         tasks = Task.objects.all()
         for t in tasks:
-            if t.status is "PENDING" and os.path.exists(t.workflow.input_path):
-                BackgroundWorker(t)
+            if t.status is "PENDING" and os.path.exists(t.workflow.v_input_path):
+                f = os.listdir(t.workflow.v_input_path)
+                if len(f) > 0:
+                    BackgroundWorker(t, f)
         logging.info("Completed LIMS workflow check")
         self.run_checks.apply_async(countdown=self.delay, queue='lims')
 
 
 class BackgroundWorker:
 
-    def __init__(self, task):
+    def __init__(self, task, file):
         self.task = task
+        self.file = file
         self.run_worker.apply_async(queue="lims")
 
     @celery_app.task(name="lims-background-worker", bind=True)
     def run_worker(self):
         logging.info("Launching processor to import data. Workflow: {}".format(self.task.workflow.name))
+        logging.info("Launching processor to import data. Workflow: {}, File: {}".format(self.task.workflow.name, self.file))
         update_status(self.task.workflow, "EXECUTING")
 
         success = False
         results = None
-
+        file_path = os.path.join(self.task.v_input_file, self.file)
         try:
-            results = self.task.workflow.processor.execute(self.task.input_file)
+            results = self.task.workflow.processor.execute(file_path)
             success = True
         except Exception as e:
             logging.info("Error attempting to execute processor: {}".format(e))
             update_status(self.task.workflow, "FAILED")
         if success:
             df = results.df
-            df.to_excel(self.task.workflow.output_path, index=False)
-            if os.path.exists(self.task.workflow.output_path):
-                os.remove(self.task.workflow.input_path)
+            file_name = self.file.split(".")[0] + "_output.xlsx"
+            output_path = os.path.join(self.task.v_input_file, file_name)
+            df.to_excel(output_path, index=False)
+            if os.path.exists(output_path):
+                os.remove(file_path)
                 update_status(self.task.workflow, "COMPLETED")
             logging.info("Completed processor to import data. Workflow: {}".format(self.task.workflow.name))
 

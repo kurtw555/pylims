@@ -26,6 +26,8 @@ class Workflow(models.Model):
     processor = Processor
     input_path = models.CharField(max_length=250)
     output_path = models.CharField(max_length=250, default='')
+    v_input_path = models.CharField(max_length=250)
+    v_output_path = models.CharField(max_length=250, default='')
     # interval in seconds - limited to 32767 - roughly 22 days
     interval = models.PositiveSmallIntegerField()
 

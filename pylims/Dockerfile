@@ -8,7 +8,6 @@ COPY requirements.txt ./requirements.txt
 RUN pip install -r requirements.txt
 RUN python --version
 
+WORKDIR /src
 COPY . /src/
 COPY uwsgi.ini /etc/uwsgi/
-
-CMD ["exec", "uwsgi", "/etc/uwsgi/uwsgi.ini"]
