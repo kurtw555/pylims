@@ -45,6 +45,21 @@ class Plugin():
         file_no_ext = os.path.splitext(base)[0]
         return file_no_ext
 
+     #Check if a string value is a number
+    def is_number(self, str_val):
+        try:
+            val = int(str_val)
+            return True
+
+        except ValueError:
+            try:
+                val = float(str_val)
+                return True
+            except ValueError:
+                return False
+
+        return False
+
     def get_template_dict(self):
         data = {'Aliquot':'',
             	'Analyte Identifier':'',
