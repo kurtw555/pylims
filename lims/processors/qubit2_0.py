@@ -66,7 +66,7 @@ class Qubit2_0(Plugin):
 
                 data.append(row)
 
-            df = df.append(data, ignore_index=True)            
+            df = df.append(data, ignore_index=True)
             result.status = "success"
             result.df = df
             return result
