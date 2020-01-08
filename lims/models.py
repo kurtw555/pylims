@@ -23,7 +23,7 @@ class Processor(models.Model):
 
 class Workflow(models.Model):
     name = models.CharField(max_length=20, default='')
-    processor = Processor
+    processor_name = models.CharField(max_length=20, default='')
     input_path = models.CharField(max_length=250)
     output_path = models.CharField(max_length=250, default='')
     # interval in seconds - limited to 32767 - roughly 22 days
