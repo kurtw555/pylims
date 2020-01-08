@@ -26,6 +26,8 @@ class Workflow(models.Model):
     processor_name = models.CharField(max_length=20, default='')
     input_path = models.CharField(max_length=250)
     output_path = models.CharField(max_length=250, default='')
+    v_input_path = models.CharField(max_length=250)
+    v_output_path = models.CharField(max_length=250, default='')
     # interval in seconds - limited to 32767 - roughly 22 days
     interval = models.PositiveSmallIntegerField()
 
@@ -37,4 +39,4 @@ class Task(models.Model):
     workflow = Workflow
     input_file = models.CharField(max_length=50)
     start_time = models.DateTimeField()
-    status = models.CharField(max_length=50)
+    status = models.CharField(max_length=50, default='PENDING')

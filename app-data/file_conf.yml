@@ -1,0 +1,7 @@
+dir:
+  # EXAMPLE ENTRY
+  # - id: TASK0001                                # ID created from workflow name or UUID
+  #   source: C:\users\test\desktop\input         # source from web UI (user input)
+  #   dest: C:\users\test\desktop\output          # dest from web UI (user input)
+  #   volume_source: /src/app-data/TASK0001/src   # generated when user creates TASK (populated from batch script)
+  #   volume_dest: /src/app-data/TASK00001/out    # generated when user creates TASK (populated after processor completes)
