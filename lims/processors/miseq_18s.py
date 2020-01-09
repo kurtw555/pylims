@@ -11,6 +11,7 @@ class MiSeq_18S(Plugin):
         super().__init__()
         self.name = 'miseq_18s'
         self.description = 'Processor for MiSeq-18S data files'
+        self.version = '1.0'
         self.file_type = ".xlsx"
 
     def execute(self, file):
