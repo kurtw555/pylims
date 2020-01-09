@@ -27,7 +27,7 @@ class Processor(models.Model):
 class Workflow(models.Model):
     id = models.CharField(max_length=20)
     name = models.CharField(max_length=20, default='')
-    processor = Processor
+    processor_name = models.CharField(max_length=20, default='')
     input_path = models.CharField(max_length=250)
     output_path = models.CharField(max_length=250, default='')
     v_input_path = models.CharField(max_length=250, default='')
