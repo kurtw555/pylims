@@ -15,8 +15,9 @@ openpyxl==3.0.2
 pandas==0.25.3
 python-dateutil==2.8.1
 pytz==2019.3
+pyyaml==5.3
 redis==3.3.11
 six==1.13.0
 sqlparse==0.3.0
-uwsgi==2.0.18
+#uwsgi==2.0.18
 wincertstore==0.2

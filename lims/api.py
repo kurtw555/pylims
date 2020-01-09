@@ -1,4 +1,3 @@
-
 from django.core import serializers
 from django.contrib.auth.models import User
 
@@ -14,9 +13,11 @@ from rest_framework import status
 
 import json
 
+import lims.utilities as utils
 from lims.models import Task, Workflow, Processor
 from lims.plugins.plugin_collection import PluginCollection
 from lims.serializers import WorkflowSerializer, TaskSerializer
+from lims.processing import GenerateTask
 
 
 @api_view(['GET'])
@@ -59,7 +60,13 @@ def workflows(request):
     elif request.method == 'POST':
         serializer = WorkflowSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save()
+            workflow = serializer.save()
+            paths = utils.generate_directories(workflow.name)
+            workflow.v_input_path = paths[0]
+            workflow.v_output_path = paths[1]
+            workflow.save()
+            utils.update_file_config(workflow.name, workflow.input_path, workflow.output_path, workflow.v_input_path, workflow.v_output_path)
+            GenerateTask(workflow)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
