@@ -42,20 +42,22 @@ class NH3_Discrete_Analyzer(Plugin):
             data = list()
             for idx, df_row in df_xl.iterrows():
                 row = self.get_template_dict()
-                aliquot = row[0]
-                if aliquot == None or analyte.strip() == "":
+                aliquot = df_row[0]
+                if aliquot == None or aliquot.strip() == "":
                     break
                 aliquot = aliquot.strip()
                 items = self.get_aliquot_dilution_factor(aliquot)
                 aliquot = items[0]
                 dilution_factor =items[1]
 
-                measured_val = row[1]
+                measured_val = df_row[1]
                 if measured_val == None:
                     measured_val = 0.0
 
-                comment = row[4]
-                if comment == None:
+                comment = df_row[4]
+                if self.pd.isna(comment):
+                    comment = ""
+                elif comment == None:
                     comment = ""
                 else:
                     comment = comment.strip()
@@ -71,6 +73,7 @@ class NH3_Discrete_Analyzer(Plugin):
             df = df.append(data, ignore_index=True)
             result.status = "success"
             result.df = df
+            return result
 
 
         except Exception as e:
