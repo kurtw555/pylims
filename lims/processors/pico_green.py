@@ -11,6 +11,7 @@ class PicoGreen(Plugin):
         super().__init__()
         self.name = 'pico_green'
         self.description = 'Processor for PicoGreen data files'
+        self.version = '1.0'
         self.file_type = ".xlsx"
 
     def execute(self, file):

@@ -19,6 +19,7 @@ class Tracefinder(Plugin):
         super().__init__()
         self.name = 'tracefinder'
         self.description = 'Processor for Tracefinder data files'
+        self.version = '1.0'
         self.file_type = ".xlsx"
 
     def execute(self, file):
