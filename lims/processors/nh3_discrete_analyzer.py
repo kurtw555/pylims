@@ -84,34 +84,4 @@ class NH3_Discrete_Analyzer(Plugin):
             self.logger.error("Error processing file: {}  Error message: {}".format(self.input_file), str(e))
             return result
                 
-
-
-
-            # for row_idx in range(2, num_rows + 1):
-            #     row = self.get_template_dict()
-            #     aliquot = sheet.cell(row=row_idx, column=1).value
-            #     if aliquot == None or analyte.strip() == "":
-            #         break
-            #     aliquot = aliquot.strip()
-            #     items = self.get_aliquot_dilution_factor(aliquot)
-            #     aliquot = items[0]
-            #     dilution_factor =items[1]
-                
-            #     measured_val = sheet.cell(row=row_idx, column=2).value
-            #     if measured_val == None or measured_val.strip() == "":
-            #         measured_val = 0.0
-
-            #     comment = sheet.cell(row=row_idx, column=5).value
-            #     if comment == None or comment.strip() == "":
-            #         comment = ""
-            #     comment = comment.strip()
-
-            #     row["Aliquot"] = aliquot
-            #     row["Analyte Identifier"] = analyte_id
-            #     row["Measured Value"] = measured_val
-            #     row["Comment"] = comment
-            #     row["Dilution Factor"] = dilution_factor
-                                
-            #     data.append(row)
-                
             
