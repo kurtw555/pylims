@@ -11,7 +11,7 @@ class Processor(models.Model):
         (".txt", "tab delimited")
     )
     # name needs to be unique across all processors
-    id = models.CharField(max_length=20)
+    id = models.CharField(max_length=20, primary_key=True)
     name = models.CharField(max_length=20)
     version = models.CharField(max_length=20)
     description = models.CharField(max_length=250)
@@ -25,7 +25,7 @@ class Processor(models.Model):
 
 
 class Workflow(models.Model):
-    id = models.CharField(max_length=20)
+    id = models.CharField(max_length=20, primary_key=True)
     name = models.CharField(max_length=20, default='')
     processor_name = models.CharField(max_length=20, default='')
     input_path = models.CharField(max_length=250)
@@ -40,7 +40,7 @@ class Workflow(models.Model):
 
 
 class Task(models.Model):
-    id = models.CharField(max_length=20, default='')
+    id = models.CharField(max_length=20, primary_key=True)
     workflow = models.CharField(max_length=50)
     input_file = models.CharField(max_length=50)
     output_file = models.CharField(max_length=50)
