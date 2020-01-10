@@ -10,4 +10,7 @@ RUN python --version
 
 WORKDIR /src
 COPY . /src/
-COPY uwsgi.ini /etc/uwsgi/
+COPY pylims/uwsgi.ini /etc/uwsgi/
+
+RUN chmod 755 /src/django_start.sh
+ENV PYTHONPATH="/src"

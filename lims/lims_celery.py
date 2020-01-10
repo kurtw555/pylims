@@ -6,7 +6,7 @@ from celery import Celery
 
 
 celery_tasks = [
-    'processing'
+    'lims.processing'
 ]
 
 redis_server = os.environ.get('REDIS_HOSTNAME') if os.environ.get('REDIS_HOSTNAME') is not None else 'localhost'
