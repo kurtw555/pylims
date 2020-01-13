@@ -11,6 +11,7 @@ class Qubit2_0(Plugin):
         super().__init__()
         self.name = 'qubit2_0'
         self.description = 'Processor for Qubit 2.0 data files'
+        self.version = '1.0'
         self.file_type = ".xlsx"
 
     def execute(self, file):

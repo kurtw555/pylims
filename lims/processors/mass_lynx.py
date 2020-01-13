@@ -14,6 +14,7 @@ class MassLynx(Plugin):
         super().__init__()
         self.name = 'mass_lynx'
         self.description = 'Mass Lynx'
+        self.version = '1.0'
         self.file_type = ".txt"
 
     def execute(self, file):

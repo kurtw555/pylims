@@ -3,12 +3,13 @@ version: '3.7'
 services:
   nginx:
     restart: always
-    build: ./nginx
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
     ports:
-      - "80:80"
-      - "443:443"
+      - "8888:80"
     links:
-      django
+      - django
 
   django:
     build:
@@ -17,25 +18,30 @@ services:
     expose:
       - "8080"
     environment:
-      - DJANGO_SETTINGS_MODULE=settings
+      - DJANGO_SETTINGS_MODULE=pylims.settings
       - REDIS_HOSTNAME=redis
       - REDIS_PORT=6379
-    command: exec uwsgi /etc/uwsgi/uwsgi.ini
+#    command: ls /src
+    command: sh /src/django_start.sh
     volumes:
       - ./app-data:/src/app-data
     links:
-      redis
-      celery
+      - redis
+      - celery
 
   celery:
     build:
       context: .
       dockerfile: Dockerfile
+    environment:
+      - DJANGO_SETTINGS_MODULE=pylims.settings
+      - REDIS_HOSTNAME=redis
+      - REDIS_PORT=6379
     command: celery worker -A lims.lims_celery -Q lims -l info
     volumes:
       - ./app-data:/src/app-data
     links:
-      redis
+      - redis
 
   redis:
     image: redis:latest

@@ -16,6 +16,7 @@ class Plugin():
     def __init__(self):
         self.id = 'UNKNOWN'
         self.name = 'UNKNOWN'
+        self.version = 'UNKNOWN'
         self.description = 'UNKNOWN'
         self.file_type = 'UNKNOWN'
         self.input_file = 'UNKNOWN'
@@ -45,7 +46,18 @@ class Plugin():
         file_no_ext = os.path.splitext(base)[0]
         return file_no_ext
 
-     #Check if a string value is a number
+    
+    #Sometimes the dilution factor will be appended to aliquot separated by a @
+    #e.g. AC1|11|ZF23|6A|MB132|10dpf@144.6
+    def get_aliquot_dilution_factor(self, str_val):
+        tokens = str_val.split("@")
+        if len(tokens) < 2:
+            tokens.append("")
+        return tokens
+
+    
+    
+    #Check if a string value is a number
     def is_number(self, str_val):
         try:
             val = int(str_val)
