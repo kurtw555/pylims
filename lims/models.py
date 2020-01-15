@@ -8,12 +8,13 @@ class Processor(models.Model):
     FILE_TYPES = (
         (".csv", "comma separated value"),
         (".xlsx", "excel"),
+        (".xls", "excel"),
         (".txt", "tab delimited")
     )
     # name needs to be unique across all processors
     id = models.CharField(max_length=20, primary_key=True)
     name = models.CharField(max_length=20)
-    version = models.CharField(max_length=20)
+    version = models.CharField(max_length=20, default='')
     description = models.CharField(max_length=250)
     file_type = models.CharField(max_length=5, choices=FILE_TYPES)
     enabled = models.BooleanField(default=False)
@@ -41,9 +42,9 @@ class Workflow(models.Model):
 
 class Task(models.Model):
     id = models.CharField(max_length=20, primary_key=True)
-    workflow = models.CharField(max_length=50)
+    workflow = models.CharField(max_length=50, default='')
     input_file = models.CharField(max_length=50)
-    output_file = models.CharField(max_length=50)
+    output_file = models.CharField(max_length=50, default='')
     start_time = models.DateTimeField()     # scheduled to execute
     status = models.CharField(max_length=50, default='PENDING')
     message = models.CharField(max_length=120, default='')
