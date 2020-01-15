@@ -12,7 +12,8 @@ class Processor(models.Model):
         (".txt", "tab delimited")
     )
     # name needs to be unique across all processors
-    id = models.CharField(max_length=20, primary_key=True)
+    #id = models.CharField(max_length=20, primary_key=True)
+    id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=20)
     version = models.CharField(max_length=20, default='')
     description = models.CharField(max_length=250)
