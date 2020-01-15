@@ -31,7 +31,10 @@ def update_file_config(name, src, out, v_src, v_out):
     }
     with open(file_config_path, 'r') as y_file:
         configs = yaml.safe_load(y_file)
-        configs.update(new_config)
+        if configs is None:
+            configs = [new_config]
+        else:
+            configs.update(new_config)
 
     if configs:
         with open(file_config_path, 'w') as y_file:
