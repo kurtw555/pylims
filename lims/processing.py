@@ -20,7 +20,8 @@ class GenerateTask:
 
     @celery_app.task(name="lims-background-processor", bind=True)
     def generate_task(self):
-        task = Task.objects.get(id=self.id)
+        _id = celery_app.current_task.request.id
+        task = Task.objects.get(id=_id)
         if task.status != "PENDING":                        # Only PENDING tasks are processed
             return
         logging.info("TASK: {} checking for files".format(self.id))
