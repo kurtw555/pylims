@@ -35,7 +35,7 @@ class NH3_Discrete_Analyzer(Plugin):
             #Data is in sheet 1
             #sheet = wb.worksheets[0]
             #num_rows = sheet.max_row
-            #num_cols = sheet.max_column                        
+            #num_cols = sheet.max_column
 
             
             analyte_id = "NH3"
