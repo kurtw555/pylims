@@ -34,7 +34,7 @@ def update_file_config(name, src, out, v_src, v_out):
         if configs is None:
             configs = [new_config]
         else:
-            configs.update(new_config)
+            configs.append(new_config)
 
     if configs:
         with open(file_config_path, 'w') as y_file:
