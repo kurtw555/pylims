@@ -12,7 +12,7 @@ class Processor(models.Model):
     )
     # name needs to be unique across all processors
     id = models.CharField(max_length=20, primary_key=True)
-    name = models.CharField(max_length=20)
+    name = models.CharField(max_length=40)
     version = models.CharField(max_length=20)
     description = models.CharField(max_length=250)
     file_type = models.CharField(max_length=5, choices=FILE_TYPES)
@@ -25,9 +25,8 @@ class Processor(models.Model):
 
 
 class Workflow(models.Model):
-    id = models.CharField(max_length=20, primary_key=True)
     name = models.CharField(max_length=20, default='')
-    processor_name = models.CharField(max_length=20, default='')
+    processor_name = models.CharField(max_length=40, default='')
     input_path = models.CharField(max_length=250)
     output_path = models.CharField(max_length=250, default='')
     v_input_path = models.CharField(max_length=250, default='')
