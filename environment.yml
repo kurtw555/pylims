@@ -55,6 +55,8 @@ dependencies:
     - django-templated-mail==1.1.1
     - djoser==2.0.3
     - pillow==6.2.1
+    - redis==3.3.11
+    - uwsgi==2.0.18
     - wxpython==4.0.7.post2
 prefix: C:\Users\KWOLFE\AppData\Local\Continuum\anaconda3\envs\pylims
 
