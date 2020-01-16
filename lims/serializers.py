@@ -24,7 +24,7 @@ class GroupSerializer(serializers.ModelSerializer):
 class WorkflowSerializer(serializers.ModelSerializer):
     class Meta:
         model = Workflow
-        fields = ['id', 'name', 'processor_name', 'input_path', 'output_path', 'interval']
+        fields = ['name', 'processor_name', 'input_path', 'output_path', 'interval']
 
 
 class ProcessorSerializer(serializers.ModelSerializer):
@@ -36,4 +36,4 @@ class ProcessorSerializer(serializers.ModelSerializer):
 class TaskSerializer(serializers.ModelSerializer):
     class Meta:
         model = Task
-        fields = ['workflow', 'input_file', 'start_time', 'status']
+        fields = ['id', 'workflow', 'input_file', 'start_time', 'status']
