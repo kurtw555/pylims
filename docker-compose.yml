@@ -21,7 +21,6 @@ services:
       - DJANGO_SETTINGS_MODULE=pylims.settings
       - REDIS_HOSTNAME=redis
       - REDIS_PORT=6379
-#    command: ls /src
     command: sh /src/django_start.sh
     volumes:
       - ./app-data:/src/app-data

@@ -1,5 +1,5 @@
 from django.core.exceptions import MiddlewareNotUsed
-from .models import Processor
+from .models import Processor, Task
 from lims.serializers import ProcessorSerializer
 from lims.plugins.plugin_collection import PluginCollection
 
@@ -32,5 +32,3 @@ class LoadProcessorsMiddleware:
         #serializer = ProcessorSerializer(processors, many=True)
 
         raise MiddlewareNotUsed
-
-        

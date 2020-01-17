@@ -44,7 +44,7 @@ class Workflow(models.Model):
 class Task(models.Model):
     id = models.CharField(max_length=20, primary_key=True)
     workflow = models.CharField(max_length=50, default='')
-    input_file = models.CharField(max_length=50)
+    input_file = models.CharField(max_length=50, default='')
     output_file = models.CharField(max_length=50, default='')
     start_time = models.DateTimeField()     # scheduled to execute
     status = models.CharField(max_length=50, default='PENDING')

@@ -54,12 +54,10 @@ def workflows(request):
     """
     permission_classes = [IsAuthenticated]
     if request.method == 'GET':
-        print("GET Request")
         workflows = Workflow.objects.all()
         serializer = WorkflowSerializer(workflows, many=True)
         return Response(serializer.data)
     else:
-        print("POST Request Data: {}".format(request.data))
         serializer = WorkflowSerializer(data=request.data)
         if serializer.is_valid():
             workflow = serializer.save()
@@ -67,7 +65,7 @@ def workflows(request):
             workflow.v_input_path = paths[0]
             workflow.v_output_path = paths[1]
             workflow.save()
-            utils.update_file_config(workflow.name, workflow.input_path, workflow.output_path, workflow.v_input_path, workflow.v_output_path)
+            utils.update_file_config(workflow.id, workflow.name, workflow.input_path, workflow.output_path, workflow.v_input_path, workflow.v_output_path)
             GenerateTask(workflow)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
