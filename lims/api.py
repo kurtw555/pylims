@@ -53,12 +53,13 @@ def workflows(request):
     API endpoint that returns all workflows or creates new workflow
     """
     permission_classes = [IsAuthenticated]
-
     if request.method == 'GET':
+        print("GET Request")
         workflows = Workflow.objects.all()
         serializer = WorkflowSerializer(workflows, many=True)
         return Response(serializer.data)
     else:
+        print("POST Request Data: {}".format(request.data))
         serializer = WorkflowSerializer(data=request.data)
         if serializer.is_valid():
             workflow = serializer.save()

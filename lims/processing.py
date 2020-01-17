@@ -1,6 +1,7 @@
 import os
 import logging
 import datetime
+from celery import uuid
 
 from .lims_celery import celery_app
 from .models import Task, Workflow, Processor
@@ -14,25 +15,25 @@ class GenerateTask:
         self.input_file = None
         self.start_date = datetime.datetime.now() + datetime.timedelta(minutes=self.interval)
         self.status = "PENDING"
-        self.id = self.generate_task.apply_async(countdown=self.interval * 60, queue='lims')
+        self.id = uuid()
         self.task = Task.create(self.id, self.workflow, self.input_file, self.start_date, self.status, "")
         self.task.save()
+        self.generate_task.apply_async(args=(self.id, workflow.id, self.interval), id=self.id, countdown=self.interval * 60, queue='lims')
 
     @celery_app.task(name="lims-background-processor", bind=True)
-    def generate_task(self):
-        _id = celery_app.current_task.request.id
-        task = Task.objects.get(id=_id)
+    def generate_task(self, id, workflow, interval):
+        task = Task.objects.get(id=id)
         if task.status != "PENDING":                        # Only PENDING tasks are processed
             return
-        logging.info("TASK: {} checking for files".format(self.id))
-        workflow = Workflow.objects.get(name=self.workflow)
+        logging.info("TASK: {} checking for files".format(id))
+        workflow = Workflow.objects.get(id=workflow)
         if os.path.exists(workflow.v_input_path):               # Check if volume input directory exists
             input_file = os.listdir(workflow.v_input_path)
             if len(input_file) > 0:                             # Check if volume input directory contains any files
                 for i in input_file:
                     completed = task_done(i)                    # Check if input file has an associated completed task
                     if not completed:
-                        logging.info("TASK: {} executing processor for file: {}".format(self.id, i))
+                        logging.info("TASK: {} executing processor for file: {}".format(id, i))
                         task.input_file = i
                         task.status = "EXECUTING"
                         task.save()
@@ -42,7 +43,7 @@ class GenerateTask:
             else:
                 task.start_time = datetime.datetime.now() + datetime.timedelta(minutes=workflow.interval)
                 task.save()
-                self.generate_task.retry(countdown=self.interval * 60)          # reschedule task because of no input files
+                self.retry(countdown=interval * 60)          # reschedule task because of no input files
         else:
             task.status = "FAILED"
             task.message = "Input path cannot be found. Input path: {}".format(workflow.v_input_path)
