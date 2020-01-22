@@ -23,7 +23,7 @@ class GenerateTask:
         self.task.save()
         self.generate_task.apply_async(args=(self.id, workflow.id, self.interval), id=self.id, countdown=self.interval * 60, queue='lims')
 
-    @celery_app.task(name="lims-background-processor", bind=True)
+    @celery_app.task(name="lims-background-processor", bind=True, max_retries=None)
     def generate_task(self, id, workflow, interval):
         try:
             task = Task.objects.get(id=id)
