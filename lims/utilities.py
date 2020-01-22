@@ -34,7 +34,7 @@ def update_file_config(id, name, src, out, v_src, v_out):
         configs = json.load(j_file)
     is_new = True
     for c in configs["workflows"]:
-        if c.id == id:
+        if c["id"] == id:
             is_new = False
     if is_new:
         configs["workflows"].append(new_config)
