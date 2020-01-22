@@ -41,7 +41,7 @@ class GenerateTask:
                     completed = task_done(i)                    # Check if input file has an associated completed task
                     if not completed:
                         logging.info("TASK: {} executing processor for file: {}".format(id, i))
-                        task.input_file = os.path.join(workflow.v_input_path, input_file)
+                        task.input_file = os.path.join(workflow.v_input_path, i)
                         task.status = "EXECUTING"
                         task.save()
                         success = run_processor(task, workflow.name, workflow.processor_name, i, workflow.v_input_path, workflow.v_output_path)
